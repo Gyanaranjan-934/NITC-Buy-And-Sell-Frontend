@@ -3,7 +3,8 @@ import BoughtItemReviewPopup from "./BoughtItemReviewPopup";
 import ItemReviewDetails from "./ItemReviewDetails";
 import EditReviewPopup from "./EditReviewPopup";
 const BoughtItemPopup = ({
-  product
+  product,
+  onClose,
 }) => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   // Added variable for review popup visibility
@@ -18,12 +19,12 @@ const BoughtItemPopup = ({
     
     // Clean up the timeout when the component unmounts
     return () => clearTimeout(timeout);
-  }, []);
+  }, [product]);
   const handleClose = () => {
     setIsPopupVisible(false);
     // Delay the closing of the popup to allow the animation to complete
     setTimeout(() => {
-      // onClose();
+      onClose();
     }, 300); // Adjust the delay time to match your transition duration
   };
   // Added function to toggle review poppup
@@ -74,7 +75,7 @@ const BoughtItemPopup = ({
           {/* to store description and condition */}
 
           {product.review && (
-            <ItemReviewDetails product={product}  />
+            <ItemReviewDetails product={product} onClose={()=>setIsPopupVisible(false)}  />
           )}
 
           {/* buttons */}
@@ -102,6 +103,7 @@ const BoughtItemPopup = ({
       {isReviewVisible && (
         <BoughtItemReviewPopup
           product={product}
+          onClose={toggleReview}
         />
       )}
       {isEditReviewVisible && (

@@ -45,6 +45,7 @@ const BoughtItemCard = ({
         <BoughtItemPopup
           key={product._id}
           product={product}
+          onClose={togglePopup}
         />
       )}
     </div>

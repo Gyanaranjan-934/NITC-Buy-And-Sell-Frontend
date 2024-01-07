@@ -131,19 +131,22 @@ const ProductState = (props) => {
 
     const createReview = async (data) => {
         try {
-            const response = await axios.post(`/reviews/create-review`, {
+            console.log(data);
+            const response = await axios.post(`${host}/reviews/create-review`, {
                 id: data.id,
                 rating: data.rating,
                 review: data.review
-            }, config)
-            if (!response.ok) {
-                // Handle non-successful response (e.g., 404 or 500)
-                throw new Error(`Request failed with status: ${response.status}`);
+            }, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            })
+            console.log(response);
+            if(response?.data?.success){
+                setProductReview(response?.data?.data)
             }
-
-            const updatedData = await response.json();
-            setProductReview(updatedData)
-            setAlert("Review saved successfully")
+            return response;
         } catch (error) {
             console.error(error);
         }
@@ -152,7 +155,12 @@ const ProductState = (props) => {
 
     const updateProductReview = async (data) => {
         try {
-            const response = await axios.put(`/reviews/update-review`, data, config)
+            const response = await axios.put(`${host}/reviews/update-review`, data, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            })
             const updatedData = response.data
             setProductReview(updatedData)
         } catch (error) {
@@ -162,7 +170,12 @@ const ProductState = (props) => {
 
     const deleteProductReview = async (id) => {
         try {
-            const response = await axios.post(`/rating/delete-rating`,{id},config)
+            const response = await axios.post(`${host}/rating/delete-rating`,{id},{
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            })
             if(response.success) {
                 setProductReview(null)
             }

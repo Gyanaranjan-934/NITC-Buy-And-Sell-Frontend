@@ -14,36 +14,39 @@ const BoughtItemReviewPopup = ({
     rating: 0,
     desc: "",
   });
-  const [onDataUpload,setOnDataUpload] = useState(false);
+  const [onDataUpload, setOnDataUpload] = useState(false);
   useEffect(() => {
     const timeout = setTimeout(() => {
       setIsPopupVisible(true);
-    }, 300); 
+    }, 300);
     return () => clearTimeout(timeout);
-  }, []);
+  }, [product]);
   const handleClose = () => {
     setIsPopupVisible(false);
-    onClose(0);
+    
+    onClose();
+    
   };
   const handleSubmit = async (event) => {
-    event.preventDefault(); 
-    console.log(productReview,reviewDetails);
-    setIsPopupVisible(false);
+    event.preventDefault();
+    // console.log(productReview,reviewDetails);
     setOnDataUpload(true);
     const newReview = await createReview({
       id: product._id,
       rating: reviewDetails.rating,
       review: reviewDetails.desc
     });
-    if(newReview?.success){
-      toast.success("Reviewed successfully");
-    }else{
-      toast.error(newReview?.data?.data?.message)
+    console.log(newReview);
+    if (newReview?.data?.success) {
+      toast.success(newReview?.data?.message);
+    } else {
+      toast.error("Error is creating review")
     }
     setOnDataUpload(false);
-    onClose(0);
+    setIsPopupVisible(false);
+    onClose()
   };
-  
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -55,14 +58,12 @@ const BoughtItemReviewPopup = ({
 
   return (
     <div
-      className={`fixed inset-0 h-full w-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity ease-in duration-500 ${
-        isPopupVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed inset-0 h-full w-full bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity ease-in duration-500 ${isPopupVisible ? "opacity-100" : "opacity-0"
+        }`}
     >
       <div
-        className={`bg-white rounded-lg shadow-md w-[80%] sm:w-[400px] h-[60%] sm:h-auto overflow-y-auto p-8 px-8 text-center z-10 transform transition-transform ease-in duration-500 ${
-          isPopupVisible ? "scale-100" : "scale-90"
-        }`}
+        className={`bg-white rounded-lg shadow-md w-[80%] sm:w-[400px] h-[60%] sm:h-auto overflow-y-auto p-8 px-8 text-center z-10 transform transition-transform ease-in duration-500 ${isPopupVisible ? "scale-100" : "scale-90"
+          }`}
       >
         {/* Heading */}
         <h2 className="text-2xl font-bold mb-4">Review your purchase</h2>
@@ -98,7 +99,7 @@ const BoughtItemReviewPopup = ({
                 className="border border-blue-700  bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded-md focus:outline-none
                 transition-all duration-300 ease-out"
               >
-                {!onDataUpload? "Submit" : "Creating Review"}
+                {!onDataUpload ? "Submit" : "Creating Review"}
               </button>
               <button
                 onClick={handleClose}
