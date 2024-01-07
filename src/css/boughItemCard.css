@@ -1,0 +1,15 @@
+@media (max-width: 360px) {
+    .bought-card {
+        flex-direction: column;
+        width:auto;
+        padding: 1rem 2rem;
+    }
+    .sm-sc-btn {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .sm-sc-btn button {
+        width: 116px;
+    }
+
+}

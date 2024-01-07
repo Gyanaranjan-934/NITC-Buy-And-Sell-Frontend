@@ -1,0 +1,9 @@
+/* CSS stylesheet */
+.fade-in {
+  opacity: 0; /* Start with a transparent element */
+  transition: opacity 1s ease-in-out; /* Add a transition effect */
+}
+
+.fade-in.active {
+  opacity: 1; /* Set the final opacity to 1 to reveal the element */
+}

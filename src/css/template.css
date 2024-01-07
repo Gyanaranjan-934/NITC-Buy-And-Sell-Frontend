@@ -1,0 +1,8 @@
+@media (max-width: 800px) {
+    .image-container {
+        display: none;
+    }
+    .form-container {
+        justify-content: center;
+    }
+}
