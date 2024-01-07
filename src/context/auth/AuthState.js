@@ -12,6 +12,10 @@ const AuthState = (props) => {
 
     const [user, setUser] = useState(null)
 
+    const host = process.env.REACT_APP_SERVER_URI
+
+    
+
     const getConfig = () => { 
         let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
         if(token) {
@@ -34,7 +38,7 @@ const AuthState = (props) => {
 
     const refreshAccessToken = async (refreshToken) => {
 
-        const tokenDetails = (await axios.get(`/users/refresh-token`, getConfig())).data
+        const tokenDetails = (await axios.get(`${host}/users/refresh-token`, getConfig())).data
 
         const newUserData = userData;
 
@@ -48,19 +52,21 @@ const AuthState = (props) => {
     }
 
     const loginUser = async (loginUserData) => {
-
+        console.log(host);
         let loggedInData = (await axios.post(
-            `/users/login`,
+            `${host}/users/login`,
             loginUserData,
             getConfig()
         ));
         loggedInData = loggedInData.data;
-        if (loggedInData) {
+        if (loggedInData.success) {
             setUser(loggedInData.data.user._id)
             setUserData(loggedInData.data.user)
             localStorage.setItem("NITCBuySellUserLocalData", JSON.stringify(loggedInData));
             sessionStorage.setItem("NITCBuySellUserAccessToken", JSON.stringify(loggedInData?.data?.accessToken))
             setIsAuthenticated(true)
+        }else{
+            console.error(loggedInData);
         }
         
         return loggedInData;
@@ -78,7 +84,7 @@ const AuthState = (props) => {
             formData.append('phoneNo', registerUserData.phoneNo);
 
 
-            const registeredUserData = await axios.post(`/users/register`, formData);
+            const registeredUserData = await axios.post(`${host}/users/register`, formData);
 
             if (registeredUserData) {
                 const userDataFromResponse = registeredUserData.data.data;
@@ -96,7 +102,7 @@ const AuthState = (props) => {
 
     const editUserData = async (editedData) => {
         try {
-            const editedUserData = await axios.put(`/users/update-account`, editedData, getConfig);
+            const editedUserData = await axios.put(`${host}/users/update-account`, editedData, getConfig);
 
             if(editedUserData?.success) {
                 const updatedData = editedUserData.data.data;

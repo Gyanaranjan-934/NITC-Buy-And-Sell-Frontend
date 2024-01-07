@@ -16,10 +16,10 @@ import Contact from "./pages/Contact";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AuthState from "./context/auth/AuthState";
+  
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
   return (
     <div className="h-[100vh] w-[100vw]">
       <AuthState>

@@ -35,7 +35,7 @@ const ChatBox = () => {
     const [messageSending, setMessageSending] = useState(false);
     const messagesEndRef = useRef(null); // Ref for scrolling to the end
     const socket = io('https://nitc-buysell-backend-rest-api.onrender.com'); // Connect to the server
-
+    const host = process.env.REACT_APP_SERVER_URI
     useEffect(() => {
         const getMessageFunction = async () => {
             let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
@@ -51,7 +51,7 @@ const ChatBox = () => {
             
             try {
                 if(selectedChat===null)return;
-                const response = await axios.get(`/chats/get-messages/${selectedChat}`,config)
+                const response = await axios.get(`${host}/chats/get-messages/${selectedChat}`,config)
                 setAllMessages(response?.data?.data);
                 setMessages(response?.data?.data);
                 setLoadingMessages(false); // Set loading to false when messages are loaded
@@ -99,7 +99,7 @@ const ChatBox = () => {
             const newmessage = newMessage;
             setNewMessage("");
             const response = await axios.post(
-                `/chats/send-message/${selectedChat}`,
+                `${host}/chats/send-message/${selectedChat}`,
                 {
                     messageBody: newmessage,
                 },

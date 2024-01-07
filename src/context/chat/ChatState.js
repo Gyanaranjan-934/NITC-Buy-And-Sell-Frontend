@@ -9,7 +9,7 @@ const ChatState = (props) => {
     const [selectedChat, setSelectedChat] = useState(null)
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [chatId, setChatId] = useState(null);
-   
+    const host = process.env.REACT_APP_SERVER_URI
     let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
     if (token) {
         token = token.substring(1, token.length - 1);
@@ -22,7 +22,7 @@ const ChatState = (props) => {
     };
     const createNewChat = async (receiverId) => {
         try {
-            const chat = await axios.post(`/chats/create-chat`,{id: receiverId},config);
+            const chat = await axios.post(`${host}/chats/create-chat`,{id: receiverId},config);
             getAllChats();
             return chat?.data
         } catch (error) {
@@ -31,7 +31,7 @@ const ChatState = (props) => {
     }
     const getAllChats = async() =>{
         try {
-            const chats  = await axios.get(`/chats/get-chats`,config);
+            const chats  = await axios.get(`${host}/chats/get-chats`,config);
             setAllChats(chats.data.data);
         } catch (error) {
             console.error(error)

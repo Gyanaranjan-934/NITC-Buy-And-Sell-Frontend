@@ -13,6 +13,7 @@ const ProductState = (props) => {
     const [picLoading, setPicLoading] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [alert, setAlert] = useState(null);
+    const host = process.env.REACT_APP_SERVER_URI
     
     let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
     if (token) {
@@ -29,7 +30,7 @@ const ProductState = (props) => {
     const getAllProducts = async () => {
         
         const response = await axios.get(
-            `/products/get-products/`,
+            `${host}/products/get-products/`,
             config
         );
         
@@ -59,7 +60,7 @@ const ProductState = (props) => {
     
         try {
             const { data } = await axios.post(
-                `/products/create-product`,
+                `${host}/products/create-product`,
                 formdata,
                 config
             );
@@ -75,7 +76,7 @@ const ProductState = (props) => {
     
     const getBoughtItems = async () => {
         try {
-            const response = await axios.get(`/products/get-bought-products`, config)
+            const response = await axios.get(`${host}/products/get-bought-products`, config)
         
             setAllBoughtProducts(response.data?.data);
         } catch (error) {
@@ -86,7 +87,7 @@ const ProductState = (props) => {
 
     const getPostedItems = async () => {
         try {
-            const response = await axios.get(`/products/get-posted-products`, config)
+            const response = await axios.get(`${host}/products/get-posted-products`, config)
             setAllPostedProducts(response.data?.data);
         } catch (error) {
             console.error(error);
@@ -96,7 +97,7 @@ const ProductState = (props) => {
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(`/products/get-categories`,config)
+            const response = await axios.get(`${host}/products/get-categories`,config)
             setAllCategories(response?.data?.data);
             
         } catch (error) {
@@ -196,7 +197,7 @@ const ProductState = (props) => {
     
             // Update the product using the axios.post method with FormData
             const response  = await axios.put(
-                `/products/update-product`,
+                `${host}/products/update-product`,
                 formData,
                 config
             );

@@ -17,6 +17,7 @@ export const Navbar = () => {
   // Function to open the popup
   // State to control the visibility of the menu
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const host = process.env.REACT_APP_SERVER_URI
 
   // Function to toggle the menu visibility
   const toggleMenu = () => {
@@ -40,7 +41,7 @@ export const Navbar = () => {
       token = token?.substring(1, token.length - 1);
     }
     const response = await axios.post(
-      "https://nitc-buysell-backend-rest-api.onrender.com/api/v1/users/logout",
+      `${host}/users/logout`,
       {
 
       },
