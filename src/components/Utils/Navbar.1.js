@@ -7,10 +7,10 @@ import { useContext } from "react";
 import AuthContext from "../../context/auth/AuthContext";
 import axios from "axios";
 
-export const Navbar = () => {
+export const Navbar = ({isAuthenticated}) => {
   const navigate = useNavigate();
 
-  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const [isPopupVisible, setIsPopupVisible] = useState(false);
 

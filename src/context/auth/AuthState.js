@@ -62,7 +62,7 @@ const AuthState = (props) => {
         if (loggedInData.success) {
             setUser(loggedInData.data.user._id)
             setUserData(loggedInData.data.user)
-            localStorage.setItem("NITCBuySellUserLocalData", JSON.stringify(loggedInData));
+            localStorage.setItem("NITCBuySellUserLocalData", JSON.stringify(loggedInData.data));
             sessionStorage.setItem("NITCBuySellUserAccessToken", JSON.stringify(loggedInData?.data?.accessToken))
             setIsAuthenticated(true)
         }else{
