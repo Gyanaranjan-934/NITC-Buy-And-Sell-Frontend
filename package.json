@@ -2,6 +2,7 @@
   "name": "nitc_buy_and_sell",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://nitc-buysell.onrender.com/",
   "dependencies": {
     "@chakra-ui/avatar": "^2.3.0",
     "@chakra-ui/icons": "^2.1.1",
