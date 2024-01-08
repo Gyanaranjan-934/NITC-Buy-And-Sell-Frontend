@@ -16,9 +16,6 @@ const ProductState = (props) => {
     const host = process.env.REACT_APP_SERVER_URI
     
     let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-    if (token) {
-        token = token.substring(1, token.length - 1);
-    }
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -84,6 +81,7 @@ const ProductState = (props) => {
             setAllBoughtProducts([])
         }
     }
+    
 
     const getPostedItems = async () => {
         try {
@@ -132,21 +130,22 @@ const ProductState = (props) => {
     const createReview = async (data) => {
         try {
             console.log(data);
-            const response = await axios.post(`${host}/reviews/create-review`, {
-                id: data.id,
-                rating: data.rating,
-                review: data.review
-            }, {
-                headers: {
+
+            const response = await axios.post(`${host}/reviews/create-review`,data, {
+                headers:{
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`
-                },
+                }
             })
             console.log(response);
-            if(response?.data?.success){
-                setProductReview(response?.data?.data)
+            if (!response) {
+                // Handle non-successful response (e.g., 404 or 500)
+                throw new Error(`Request failed with status: ${response.status}`);
             }
-            return response;
+
+            const updatedData = await response.json();
+            setProductReview(updatedData)
+            setAlert("Review saved successfully")
         } catch (error) {
             console.error(error);
         }
@@ -155,11 +154,11 @@ const ProductState = (props) => {
 
     const updateProductReview = async (data) => {
         try {
-            const response = await axios.put(`${host}/reviews/update-review`, data, {
-                headers: {
+            const response = await axios.put(`/reviews/update-review`, data, {
+                headers:{
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`
-                },
+                }
             })
             const updatedData = response.data
             setProductReview(updatedData)
@@ -170,12 +169,7 @@ const ProductState = (props) => {
 
     const deleteProductReview = async (id) => {
         try {
-            const response = await axios.post(`${host}/rating/delete-rating`,{id},{
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-            })
+            const response = await axios.post(`/rating/delete-rating`,{id},config)
             if(response.success) {
                 setProductReview(null)
             }

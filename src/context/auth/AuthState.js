@@ -4,6 +4,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 
 
+
 const AuthState = (props) => {
     
     const [userData, setUserData] = useState(null)
@@ -18,16 +19,12 @@ const AuthState = (props) => {
 
     const getConfig = () => { 
         let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-        if(token) {
-            token = token?.substring(1, token.length-1);
-        }
         const config = {
             headers: {
                 "Content-type": "application/json",
                 'Authorization':`Bearer ${token}`
             },
         };
-
         return config;
     }
 
@@ -56,14 +53,14 @@ const AuthState = (props) => {
         let loggedInData = (await axios.post(
             `${host}/users/login`,
             loginUserData,
-            getConfig()
         ));
         loggedInData = loggedInData.data;
         if (loggedInData.success) {
             setUser(loggedInData.data.user._id)
             setUserData(loggedInData.data.user)
+            console.log(loggedInData);
             localStorage.setItem("NITCBuySellUserLocalData", JSON.stringify(loggedInData.data));
-            sessionStorage.setItem("NITCBuySellUserAccessToken", JSON.stringify(loggedInData?.data?.accessToken))
+            sessionStorage.setItem("NITCBuySellUserAccessToken", loggedInData?.data?.accessToken)
             setIsAuthenticated(true)
         }else{
             console.error(loggedInData);
@@ -102,7 +99,7 @@ const AuthState = (props) => {
 
     const editUserData = async (editedData) => {
         try {
-            const editedUserData = await axios.put(`${host}/users/update-account`, editedData, getConfig);
+            const editedUserData = await axios.put(`${host}/users/update-account`, editedData, getConfig());
 
             if(editedUserData?.success) {
                 const updatedData = editedUserData.data.data;

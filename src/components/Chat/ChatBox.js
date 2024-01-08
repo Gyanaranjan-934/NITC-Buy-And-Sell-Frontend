@@ -4,6 +4,7 @@ import AuthContext from "../../context/auth/AuthContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import io from 'socket.io-client';
+import ListSkeleton from "../Utils/ListSkeleton";
 
 
 const ChatBox = () => {
@@ -26,6 +27,7 @@ const ChatBox = () => {
     };
 
 
+    
 
     const { user } = useContext(AuthContext);
 
@@ -36,12 +38,9 @@ const ChatBox = () => {
     const messagesEndRef = useRef(null); // Ref for scrolling to the end
     const socket = io('https://nitc-buysell-backend-rest-api.onrender.com'); // Connect to the server
     const host = process.env.REACT_APP_SERVER_URI
+    let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
     useEffect(() => {
         const getMessageFunction = async () => {
-            let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-            if (token) {
-                token = token?.substring(1, token.length - 1);
-            }
             const config = {
                 headers: {
                     "Content-type": "application/json",
@@ -85,10 +84,6 @@ const ChatBox = () => {
 
         event.preventDefault();
         try {
-            let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-            if (token) {
-                token = token?.substring(1, token.length - 1);
-            }
             const config = {
                 headers: {
                     "Content-type": "application/json",
@@ -123,9 +118,7 @@ const ChatBox = () => {
                     <div className="flex-grow flex flex-col overflow-y-auto">
                         {/* Show a spinner while loading messages */}
                         {loadingMessages ? (
-                            <div className="flex items-center justify-center h-full">
-                                <h1>Loading messages...</h1>
-                            </div>
+                            <ListSkeleton/>
                         ) : messages.map((message) => (
                             <div
                                 key={message._id}

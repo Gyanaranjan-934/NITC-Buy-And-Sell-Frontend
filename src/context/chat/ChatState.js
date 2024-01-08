@@ -11,9 +11,7 @@ const ChatState = (props) => {
     const [chatId, setChatId] = useState(null);
     const host = process.env.REACT_APP_SERVER_URI
     let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-    if (token) {
-        token = token.substring(1, token.length - 1);
-    }
+    
     const config = {
         headers: {
             'Accept': 'application/json',
@@ -26,12 +24,21 @@ const ChatState = (props) => {
             getAllChats();
             return chat?.data
         } catch (error) {
+            
             console.error(error)
         }
     }
     const getAllChats = async() =>{
+        let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
+        console.log(token);
         try {
-            const chats  = await axios.get(`${host}/chats/get-chats`,config);
+            const chats  = await axios.get(`${host}/chats/get-chats`,{
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
             setAllChats(chats.data.data);
         } catch (error) {
             console.error(error)

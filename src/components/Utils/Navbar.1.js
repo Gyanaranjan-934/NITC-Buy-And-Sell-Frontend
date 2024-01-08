@@ -33,13 +33,11 @@ export const Navbar = ({isAuthenticated}) => {
     setIsMenuVisible(false);
     setIsPopupVisible(true);
   };
+  
 
   const handleLogout = async () => {
     hideMenu();
     let token = sessionStorage.getItem("NITCBuySellUserAccessToken");
-    if (token) {
-      token = token?.substring(1, token.length - 1);
-    }
     const response = await axios.post(
       `${host}/users/logout`,
       {
