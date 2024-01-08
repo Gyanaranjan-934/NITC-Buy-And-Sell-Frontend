@@ -2,10 +2,9 @@ import React, { useContext, useState } from "react";
 import BoughtItemCard from "./BoughtItemCard";
 import ProductContext from "../../context/product/ProductContext";
 import { useEffect } from "react";
-import ListSkeleton from "../Utils/ListSkeleton";
 
 const MyBoughtItemsCollection = ({ searchParam }) => {
-  const { allBoughtProducts, getBoughtItems } = searchParam;useContext(ProductContext);
+  const { allBoughtProducts, getBoughtItems } = useContext(ProductContext);
   const [dataLoading, setDataLoading] = useState(false);
 
   useEffect(() => {
@@ -21,14 +20,11 @@ const MyBoughtItemsCollection = ({ searchParam }) => {
     };
     fetchData();
     // eslint-disable-next-line
-  }, []);
+  }, [allBoughtProducts]);
 
   const boughtItems = allBoughtProducts;
 
   return (
-    dataLoading ? (
-      <ListSkeleton />
-    ) : (
       <div className="flex justify-center max-w-[1380px] my-0 mx-auto">
         {boughtItems.length === 0 ? (
           <div className="mt-12">
@@ -42,7 +38,6 @@ const MyBoughtItemsCollection = ({ searchParam }) => {
           </div>
         )}
       </div>
-    )
   );
 };
 
